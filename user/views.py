@@ -1,5 +1,6 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from django.contrib.auth import get_user_model
+from rest_framework.views import APIView
 from . import serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -79,3 +80,12 @@ class UpdateResetPassword(generics.RetrieveUpdateAPIView):
             return Response(context, status=status.HTTP_200_OK)
         except:
             return Response({'result': 'პაროლის განსაახლებელ ტოკენს დრო გაუვიდა სცადეთ თავიდან'})
+
+
+class Logout(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        request.user.auth_token.delete()
+        context = {'result': 'log out'}
+        return Response(context, status=status.HTTP_204_NO_CONTENT)

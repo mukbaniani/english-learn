@@ -1,6 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
+from django.utils import timezone
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class Author(models.Model):
@@ -56,3 +60,17 @@ class ParagraphStory(models.Model):
 
     def __str__(self):
         return f"{self.__class__.__name__}('{self.story}')"
+
+
+class Dictionary(models.Model):
+    in_english = models.CharField(max_length=255, verbose_name=_('ინგლისური'))
+    in_georgian = models.CharField(max_length=255, verbose_name=_('ქართულად'))
+    datetime = models.DateTimeField(default=timezone.now, verbose_name=_('დამატების თარიღი'))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('მფლობელი'))
+    paragraph = models.ForeignKey(Paragraph, on_delete=models.DO_NOTHING, blank=True,  null=True, verbose_name=_('პარაგრაფი'))
+
+    class Meta:
+        verbose_name = _('ლექსიკონი')
+
+    def __str__(self):
+        return f"{self.__class__.__name__}('{self.in_english}' -> '{self.in_georgian}')"

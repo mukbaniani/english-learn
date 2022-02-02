@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import BookName, Paragraph, ParagraphStory, Author
+from .models import BookName, Paragraph, ParagraphStory, Author, Dictionary
 
 
 class BookNameSerializer(serializers.ModelSerializer):
@@ -24,3 +24,9 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = '__all__'
+
+
+class DictionarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dictionary
+        fields = ['in_english', 'in_georgian', 'user', 'paragraph']

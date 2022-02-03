@@ -1,4 +1,4 @@
-from rest_framework import generics, status, permissions
+from rest_framework import generics, status, permissions, pagination
 from .models import BookName, Paragraph, ParagraphStory, Author, Dictionary
 from . import serializer
 from rest_framework.viewsets import  ModelViewSet
@@ -51,4 +51,13 @@ class DictionaryView(ModelViewSet):
 
     def get_queryset(self):
         q = Dictionary.objects.filter(user_id=self.request.user.pk)
+        return q
+
+
+class FilterByParagraph(generics.ListAPIView):
+    serializer_class = serializer.DictionarySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        q = Dictionary.objects.filter(paragraph_id=self.kwargs.get('paragraph_id')).all()
         return q

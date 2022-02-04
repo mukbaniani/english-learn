@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'book',
     'user',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'django_filters'
 ]
 
 REST_FRAMEWORK = {

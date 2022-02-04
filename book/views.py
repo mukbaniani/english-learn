@@ -2,11 +2,14 @@ from rest_framework import generics, status, permissions, pagination
 from .models import BookName, Paragraph, ParagraphStory, Author, Dictionary
 from . import serializer
 from rest_framework.viewsets import  ModelViewSet
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class BookNameListView(generics.ListAPIView):
     queryset = BookName.objects.all()
     serializer_class = serializer.BookNameSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name']
 
 
 class ParagraphView(generics.ListAPIView):
@@ -29,6 +32,8 @@ class ParagraphStoryView(generics.RetrieveAPIView):
 class AuthorList(generics.ListAPIView):
     queryset = Author.objects.all()
     serializer_class = serializer.AuthorSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name']
 
 
 class RetrieveAuthor(generics.RetrieveAPIView):
@@ -39,6 +44,8 @@ class RetrieveAuthor(generics.RetrieveAPIView):
 
 class GetBookByCategory(generics.ListAPIView):
     serializer_class = serializer.BookNameSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name']
 
     def get_queryset(self):
         q = BookName.objects.filter(author_id=self.kwargs.get('author_id')).all()
@@ -48,6 +55,8 @@ class GetBookByCategory(generics.ListAPIView):
 class DictionaryView(ModelViewSet):
     serializer_class = serializer.DictionarySerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['in_english', 'in_georgian']
 
     def get_queryset(self):
         q = Dictionary.objects.filter(user_id=self.request.user.pk)
@@ -57,6 +66,8 @@ class DictionaryView(ModelViewSet):
 class FilterByParagraph(generics.ListAPIView):
     serializer_class = serializer.DictionarySerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['in_english', 'in_georgian']
 
     def get_queryset(self):
         q = Dictionary.objects.filter(paragraph_id=self.kwargs.get('paragraph_id')).all()

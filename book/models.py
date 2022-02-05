@@ -74,3 +74,15 @@ class Dictionary(models.Model):
 
     def __str__(self):
         return f"{self.__class__.__name__}('{self.in_english}' -> '{self.in_georgian}')"
+
+
+class Quiz(models.Model):
+    is_right_answer = models.BooleanField(verbose_name=_('სწორი პასუხია?'))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('მომხმარებელი'))
+    paragraph = models.ForeignKey(Paragraph, on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name=_('პარაგრაფი'))
+
+    def __str__(self):
+        return f"{self.__class__.__name__}('{self.user.name}' -> {self.is_right_answer})"
+
+    class Meta:
+        verbose_name = _('ქვიზი')

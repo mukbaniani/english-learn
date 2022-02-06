@@ -13,5 +13,6 @@ urlpatterns = [
     path('author-list/', views.AuthorList().as_view(), name='author-list'),
     path('author-retrieve/<int:id>/', views.RetrieveAuthor().as_view(), name='author-retrieve'),
     path('get-book-by-author/<int:author_id>/', views.GetBookByCategory().as_view(), name='get-book-by-author'),
-    path('filter-by-paragraph/<int:paragraph_id>/', views.FilterByParagraph().as_view(), name='filter-by-paragraph')
+    path('filter-by-paragraph/<int:paragraph_id>/', views.FilterByParagraph().as_view(), name='filter-by-paragraph'),
+    path('quiz-view/<int:paragraph_id>/<str:word>', views.QuizView().as_view(), name='quiz')
 ] + router.urls

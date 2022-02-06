@@ -1,8 +1,9 @@
 from rest_framework import generics, status, permissions, pagination
-from .models import BookName, Paragraph, ParagraphStory, Author, Dictionary
+from .models import BookName, Paragraph, ParagraphStory, Author, Dictionary, Quiz
 from . import serializer
 from rest_framework.viewsets import  ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Q
 
 
 class BookNameListView(generics.ListAPIView):
@@ -72,3 +73,18 @@ class FilterByParagraph(generics.ListAPIView):
     def get_queryset(self):
         q = Dictionary.objects.filter(paragraph_id=self.kwargs.get('paragraph_id')).all()
         return q
+
+
+class QuizView(generics.ListCreateAPIView):
+    queryset = Dictionary.objects.all()
+    serializer_class = serializer.DictionarySerializer
+
+    def post(self, request, *args, **kwargs):
+        word = self.kwargs.get('word')
+        paragraph_id = self.kwargs.get('paragraph_id')
+        user = self.request.user
+        d = Dictionary.objects.filter(Q(in_georgian=word) | Q(in_georgian=word)).exists()
+        if d:
+            Quiz.objects.create(is_right_answer=True, user=user, paragraph=paragraph_id)
+        else:
+            Quiz.objects.create(is_right_answer=False, user=user, paragraph=paragraph_id)

@@ -71,6 +71,9 @@ class Dictionary(models.Model):
 
     class Meta:
         verbose_name = _('ლექსიკონი')
+        indexes = [
+            models.Index(fields=['in_english', 'in_english'])
+        ]
 
     def __str__(self):
         return f"{self.__class__.__name__}('{self.in_english}' -> '{self.in_georgian}')"

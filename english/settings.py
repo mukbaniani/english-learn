@@ -148,3 +148,7 @@ JWT_EXP_DELTA_SECONDS = 180
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
+AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
+PHONE_NUMBER = os.environ['PHONE_NUMBER']

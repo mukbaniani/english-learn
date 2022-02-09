@@ -6,6 +6,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from .email import Mail
 from .tokens import decode_reset_token
+from .send_mobile_sms import send_sms
 
 User = get_user_model()
 
@@ -28,6 +29,14 @@ class VerifyUser(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = serializers.VerifyUser
     lookup_field = 'id'
+
+    def put(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = User.objects.filter(pk=self.kwargs.get('id')).first()
+        user.is_active = True
+        send_sms(user.phone_number)
+        return Response({'result': 'verified'}, status=status.HTTP_200_OK)
 
 
 class LoginUser(generics.CreateAPIView):

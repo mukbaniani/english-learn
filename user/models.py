@@ -37,6 +37,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=25, verbose_name=_('მომხმარებელი'))
     email = models.EmailField(verbose_name=_('მეილი'), unique=True)
     password = models.CharField(max_length=255, verbose_name=_('პაროლი'))
+    phone_number = models.CharField(max_length=13, verbose_name=_('ტელეფონის ნომერი'), blank=True, null=True)
 
     def __str__(self):
         return f"{self.__class__.__name__}('{self.username}', '{self.email}')"

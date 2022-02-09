@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['password1', 'password2', 'first_name', 'last_name', 'username', 'email', 'token']
+        fields = ['password1', 'password2', 'first_name', 'last_name', 'username', 'email', 'phone_number', 'token']
 
     def validate(self, attrs):
         password1 = attrs.get('password1')
@@ -31,6 +31,7 @@ class UserSerializer(serializers.ModelSerializer):
             first_name=validated_data.get('first_name'),
             last_name=validated_data.get('last_name'),
             email=validated_data.get('email'),
+            phone_number=f'+995{validated_data.get("phone_number")}',
             is_active=False
         )
         user.set_password(password)

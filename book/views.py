@@ -1,9 +1,9 @@
 from rest_framework import generics, status, permissions, pagination
-from .models import BookName, Paragraph, ParagraphStory, Author, Dictionary, Quiz
+from .models import BookName, Paragraph, ParagraphStory, Author, Dictionary, Quiz, User
 from . import serializer
 from rest_framework.viewsets import  ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import Q
+from django.db.models import Q, Count
 
 
 class BookNameListView(generics.ListAPIView):
@@ -88,3 +88,15 @@ class QuizView(generics.ListCreateAPIView):
             Quiz.objects.create(is_right_answer=True, user=user, paragraph=paragraph_id)
         else:
             Quiz.objects.create(is_right_answer=False, user=user, paragraph=paragraph_id)
+
+
+class QuizStat(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer = serializer.StatSerializer
+
+    def get_queryset(self):
+        q = User.objects.filter(pk=self.request.user.id).annotate(
+            right=Count('user__quiz', filter=Q(user__quiz=True)),
+            wrong=Count('user__quiz', filter=Q(user__quiz=False)),
+        )
+        return q

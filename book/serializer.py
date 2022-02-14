@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from .models import BookName, Paragraph, ParagraphStory, Author, Dictionary
 
@@ -30,3 +31,8 @@ class DictionarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Dictionary
         fields = ['in_english', 'in_georgian', 'user', 'paragraph']
+
+
+class StatSerializer(serializers.Serializer):
+    right = serializers.CharField(label=_('სწორი პასუხები'), read_only=True)
+    wrong = serializers.CharField(label=_('არასოწორი პასუხები'), read_only=True)

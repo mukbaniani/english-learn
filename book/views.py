@@ -79,7 +79,7 @@ class FilterByParagraph(generics.ListAPIView):
 class QuizView(generics.ListCreateAPIView):
     queryset = Dictionary.objects.all()
     serializer_class = serializer.QuizFormSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         paragraph_id = Paragraph.objects.filter(id=self.kwargs.get('paragraph_id')).first()

@@ -36,3 +36,8 @@ class DictionarySerializer(serializers.ModelSerializer):
 class StatSerializer(serializers.Serializer):
     right = serializers.CharField(label=_('სწორი პასუხები'), read_only=True)
     wrong = serializers.CharField(label=_('არასოწორი პასუხები'), read_only=True)
+
+
+class QuizFormSerializer(serializers.Serializer):
+    in_english = serializers.CharField(label=_("ინგლისურად"), write_only=True, required=True)
+    in_georgian = serializers.CharField(label=_("ქართულად"), write_only=True, required=True)

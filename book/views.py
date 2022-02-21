@@ -83,7 +83,7 @@ class QuizView(generics.ListCreateAPIView):
 
     def post(self, request, *args, **kwargs):
         paragraph_id = Paragraph.objects.filter(id=self.kwargs.get('paragraph_id')).first()
-        user = User.objects.first()
+        user = self.request.user
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         in_english = serializer.validated_data.get("in_english")
